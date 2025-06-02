@@ -1,0 +1,51 @@
+{
+  "manifest_version": 3,
+  "name": "Roblox Avatar Copier",
+  "version": "1.1.0",
+  "description": "Copy any Roblox avatar to your account with one click. Advanced item checking and purchase management.",
+  "author": "Muhammed Talha",
+  "homepage_url": "https://github.com/your-username/roblox-avatar-copier",
+  "permissions": [
+    "cookies", 
+    "activeTab", 
+    "storage", 
+    "tabs", 
+    "clipboardRead"
+  ],
+  "host_permissions": [
+    "https://*.roblox.com/*",
+    "https://api.gumroad.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Roblox Avatar Copier",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "32": "images/icon32.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.roblox.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["images/*.png", "images/*.svg"],
+      "matches": ["https://*.roblox.com/*"]
+    }
+  ]
+}

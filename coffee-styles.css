@@ -1,0 +1,240 @@
+/* Donate button styles - Updated Pink Theme */
+.donate-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.donate-button {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #e91e63, #ad1457);
+  color: white;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  font-weight: 500;
+}
+
+.donate-button:hover {
+  background: linear-gradient(135deg, hsl(314, 93%, 95%), rgb(254, 229, 248));
+  color: #6f2c91;
+  border-color: #e91e63;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(254, 229, 248, 0.4);
+  text-decoration: none;
+}
+
+/* Coffee Notification Styles - Pink/Purple Theme - Popup Optimized */
+.coffee-notification {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  left: 10px;
+  width: auto;
+  max-width: 300px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #fee5f8, #f8d7da);
+  border: 1px solid #f5c2c7;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 16px rgba(254, 229, 248, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10000;
+  animation: slideInRight 0.3s ease-out;
+  font-family: inherit;
+  /* Popup-specific adjustments */
+  font-size: 0.875rem;
+}
+
+/* Dark theme support */
+:root.dark-theme .coffee-notification {
+  background: linear-gradient(135deg, #3d2a47, #2d1b33);
+  border-color: #5a3b6b;
+  box-shadow: 0 4px 16px rgba(61, 42, 71, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.coffee-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.coffee-notification h3 {
+  margin: 0;
+  color: #6f2c91;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(111, 44, 145, 0.1);
+}
+
+:root.dark-theme .coffee-notification h3 {
+  color: #e5a3ff;
+}
+
+.coffee-text p {
+  margin: 0;
+  color: #8e44ad;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  text-align: center;
+}
+  
+:root.dark-theme .coffee-text p {
+  color: #d1a3e8;
+}
+
+.coffee-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.coffee-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #e91e63, #ad1457);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 8px rgba(233, 30, 99, 0.3);
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.coffee-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(254, 229, 248, 0.6);
+  /* Kullanıcının istediği renk - #fee5f8 */
+  background: linear-gradient(135deg, #fee5f8, hsl(314, 93%, 95%));
+  color: #6f2c91;
+  border: 1px solid #e91e63;
+  text-decoration: none;
+}
+
+.close-button {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: #8e44ad;
+  border: 1px solid #d1a3e8;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  flex: 1;
+  min-width: 0;
+}
+
+.close-button:hover {
+  /* Kullanıcının istediği renk şeması */
+  background: linear-gradient(135deg, #fee5f8, rgb(254, 229, 248));
+  color: #6f2c91;
+  border-color: #e91e63;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(254, 229, 248, 0.4);
+}
+
+:root.dark-theme .close-button {
+  color: #d1a3e8;
+  border-color: #8e44ad;
+}
+
+:root.dark-theme .close-button:hover {
+  background: linear-gradient(135deg, #3d2a47, #2d1b33);
+  color: #e5a3ff;
+  border-color: #d1a3e8;
+}
+
+/* Background coffee icon - removed since not using icons */
+
+/* Animations */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Responsive design - Popup optimized */
+@media (max-width: 480px) {
+  .coffee-notification {
+    width: calc(100% - 20px);
+    left: 10px;
+    right: 10px;
+  bottom: 10px;
+    max-width: none;
+  }
+  
+  .coffee-actions {
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+  
+  .coffee-button,
+  .close-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .coffee-notification {
+    border-width: 3px;
+  }
+  
+  .coffee-button {
+    border: 3px solid #e91e63;
+  }
+  
+  .close-button {
+    border-width: 3px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .coffee-notification {
+    animation: none;
+  }
+  
+  .coffee-button,
+  .close-button {
+    transition: none;
+  }
+  
+  .coffee-button:hover,
+  .close-button:hover {
+    transform: none;
+  }
+}

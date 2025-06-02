@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=380, initial-scale=1.0, user-scalable=no">
+  <title>Roblox Avatar Copier</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="themes.css">
+  <link rel="stylesheet" href="coffee-styles.css">
+  <style>
+    /* Popup-specific overrides to prevent offset issues */
+    html, body {
+      border-radius: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow-x: hidden;
+      box-sizing: border-box;
+    }
+    
+    /* Prevent any browser-applied popup styling */
+    * {
+      box-sizing: border-box;
+    }
+    
+    /* Ensure container fills popup properly */
+    .container {
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      margin: 0 !important;
+    }
+    
+    /* Fix any potential theme offset issues */
+    [class*="theme-"] .container {
+      border-radius: 0 !important;
+      margin: 0 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Ana kontrol paneli -->
+    <div id="mainPanel">
+      <div class="header">
+        <div class="header-left">
+          <h1>🎮 Roblox Avatar Copier</h1>
+        </div>
+        <div class="header-right">
+          <button id="settingsButton" class="icon-button" title="Settings">
+            ⚙️
+          </button>
+        </div>
+      </div>
+      
+      <div id="avatarPageCheck" style="display: none;" class="warning-box">
+        <div class="warning-icon">⚠️</div>
+        <div class="warning-content">
+          <p data-locale="notOnAvatarPage">This extension only works on the Roblox Avatar page.</p>
+          <button id="goToAvatarPage" class="button primary" data-locale="goToAvatarPage">Go to Avatar Page</button>
+        </div>
+      </div>
+      
+      <div id="contentWrapper">
+        <div class="form-group">
+          <label for="profileId" data-locale="profileIdLabel">Profile ID:</label>
+          <div class="input-group">
+            <input type="text" id="profileId" placeholder="Enter User ID" data-locale="profileIdPlaceholder">
+            <button id="pasteButton" class="input-icon-button" title="Extract ID from URL">
+              📋
+            </button>
+          </div>
+        </div>
+        
+        <div class="preview-container">
+          <div class="avatar-preview">
+            <img id="avatarImage" src="images/default-avatar.png" alt="Avatar Preview">
+            <div class="loading-spinner" id="loadingSpinner" style="display: none;"></div>
+          </div>
+          <div class="avatar-info">
+            <p id="username"><span data-locale="username">Username</span>: <span>-</span></p>
+            <p id="itemCount"><span data-locale="itemCount">Item Count</span>: <span id="itemCountValue">-</span></p>
+            <p id="missingItemCount" style="display: none;"><span data-locale="missingItemCount">Missing Items</span>: <span id="missingItemCountNumber">-</span></p>
+          </div>
+        </div>
+        
+        <div class="button-group">
+          <button id="previewButton" class="button secondary" data-locale="previewButton">️ Preview</button>
+          <button id="copyButton" class="button primary" disabled data-locale="copyButton">📥 Copy Avatar</button>
+        </div>
+        
+        <div class="button-group">
+          <button id="checkItemsButton" class="button secondary" disabled data-locale="checkItemsButton">🔍 Show Missing Items</button>
+        </div>
+        
+        <div id="status" class="status" style="display: none;"></div>
+      </div>
+      
+      <div id="robuxInfoSection" style="display: none; margin-top: 15px; padding: 10px; border: 1px solid #444; border-radius: 5px;">
+        <div class="robux-info-row">
+          <span data-locale="robuxCurrentLabel">Mevcut Robux:</span>
+          <span id="currentUserRobux">-</span>
+        </div>
+        <div class="robux-info-row">
+          <span data-locale="robuxCostLabel">Eksik Eşya Maliyeti:</span>
+          <span id="missingItemsCost">-</span>
+        </div>
+        <hr class="robux-info-divider">
+        <div class="robux-info-row robux-remaining-row">
+          <span data-locale="robuxRemainingLabel">Kalan Robux:</span>
+          <span id="remainingRobux">-</span>
+        </div>
+      </div>
+      
+      <!-- Missing Items Section -->
+      <div id="missingItemsSection" class="missing-items-section" style="display: none;">
+        <div class="section-header">
+          <h3 data-locale="missingItems">❌ Missing Items</h3>
+          <div class="item-controls">
+            <button id="refreshMissingItems" class="icon-button" title="Refresh">
+              🔄
+            </button>
+          </div>
+        </div>
+        <p class="info-text" data-locale="infoText">You need to buy these items:</p>
+        <div id="missingItemsList" class="items-grid"></div>
+        <div class="button-group">
+          <button id="copyWithOwnedButton" class="button primary" data-locale="copyWithOwnedButton">✅ Copy With Owned Items Only</button>
+        </div>
+        <div class="button-group">
+          <button id="openAllItemsButton" class="button secondary" data-locale="openAllItemsButton">🌐 Open All Items in New Tabs</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Ayarlar paneli -->
+    <div id="settingsPanel" style="display: none;">
+      <div class="header">
+        <div class="header-left">
+          <button id="backButton" class="icon-button" title="Back">
+            ⬅️
+          </button>
+          <h1 data-locale="settingsTitle">⚙️ Settings</h1>
+        </div>
+      </div>
+      
+      <div class="settings-container">
+        <div class="setting-group">
+          <h3 data-locale="generalSettings">🔧 General Settings</h3>
+          
+          <div class="setting-item">
+            <div class="setting-info">
+              <label data-locale="autoPreviewLabel">Auto Avatar Preview</label>
+              <p class="setting-description" data-locale="autoPreviewDesc">Automatically preview after entering Profile ID</p>
+            </div>
+            <div class="setting-control">
+              <label class="switch">
+                <input type="checkbox" id="autoPreview">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="setting-item">
+            <div class="setting-info">
+              <label data-locale="confirmPurchaseLabel">Purchase Confirmation</label>
+              <p class="setting-description" data-locale="confirmPurchaseDesc">Ask for confirmation when buying items</p>
+            </div>
+            <div class="setting-control">
+              <label class="switch">
+                <input type="checkbox" id="confirmPurchase" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="setting-item">
+            <div class="setting-info">
+              <label data-locale="languageLabel">Language</label>
+              <p class="setting-description" data-locale="languageDesc">Change the extension language</p>
+            </div>
+            <div class="setting-control">
+              <select id="language">
+                <option value="tr" data-locale="Turkish">🇹🇷 Türkçe</option>
+                <option value="en" data-locale="English">🇺🇸 English</option>
+                <option value="es" data-locale="Spanish">🇪🇸 Español</option>
+                <option value="de" data-locale="German">🇩🇪 Deutsch</option>
+                <option value="fr" data-locale="French">🇫🇷 Français</option>
+                <option value="pt" data-locale="Portuguese">🇧🇷 Português</option>
+                <option value="ru" data-locale="Russian">🇷🇺 Русский</option>
+                <option value="ko" data-locale="Korean">🇰🇷 한국어</option>
+                <option value="ja" data-locale="Japanese">🇯🇵 日本語</option>
+                <option value="zh" data-locale="Chinese">🇨🇳 简体中文</option>
+              </select>
+            </div>
+            </div>
+          </div>
+          
+        <!-- Premium Themes Section -->
+        <div class="setting-group">
+          <h3 data-locale="premiumThemes">🎨 Premium Themes</h3>
+          <div class="setting-item" style="flex-direction: column; align-items: stretch;">
+            <div class="setting-info" style="margin-bottom: 1rem;">
+              <label data-locale="themeLabel">Choose Your Theme</label>
+              <p class="setting-description" data-locale="themeDesc">Customize your extension with beautiful premium themes</p>
+            </div>
+            <div id="themeSelector"></div>
+          </div>
+          
+          <!-- Özel Kod Bölümü -->
+          <div class="setting-item" style="flex-direction: column; align-items: stretch; margin-top: 1rem;">
+            <div class="setting-info" style="margin-bottom: 1rem;">
+              <label data-locale="secretCodeLabel">🔑 Special Theme Code</label>
+              <p class="setting-description" data-locale="secretCodeDesc">Have a special theme code? Enter it here to unlock exclusive themes</p>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="text" id="secretCodeInput" placeholder="" 
+                     style="flex: 1; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); 
+                            background: var(--bg-secondary); color: var(--text-primary); font-family: monospace; text-transform: uppercase;">
+              <button id="applySecretCodeBtn" class="button primary" style="min-width: 100px;" data-locale="applySecretCodeButton">
+                🚀 Apply
+              </button>
+            </div>
+            <div id="secretCodeStatus" style="margin-top: 0.5rem; font-size: 0.8rem; display: none;"></div>
+          </div>
+        </div>
+        
+        <div class="setting-group">
+          <h3 data-locale="advancedSettings">🔬 Advanced Settings</h3>
+          
+          <div class="setting-item">
+            <div class="setting-info">
+              <label data-locale="batchSizeLabel">Batch Processing Size</label>
+              <p class="setting-description" data-locale="batchSizeDesc">Number of items to check simultaneously</p>
+            </div>
+            <div class="setting-control">
+              <select id="batchSize">
+                <option value="3" data-locale="slow">🐌 Slow (3 items)</option>
+                <option value="5" selected data-locale="normal">⚡ Normal (5 items)</option>
+                <option value="10" data-locale="fast">🚀 Fast (10 items)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="setting-group">
+          <h3 data-locale="aboutSection">ℹ️ About</h3>
+          <div class="about-section">
+            <p data-locale="version">🎮 Roblox Avatar Copier v1.1.0</p>
+            <p data-locale="aboutText">Advanced Chrome extension for copying Roblox avatars. Equipped with modern interface, performance optimization and security features.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <p data-locale="footerNote">Note: You must own all items in the avatar you want to copy.</p>
+      <div class="donate-button-container">
+        <a href="https://buymeacoffee.com/mtktalha" target="_blank" class="donate-button">
+          <span data-locale="donateButton">Buy Me a Coffee</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Buy Me a Coffee bildirimi -->
+  <div id="buyMeACoffee" class="coffee-notification" style="display: none;">
+    <div class="coffee-content">
+      <h3 data-locale="coffeeNotificationTitle">
+        Buy Me a Coffee?
+      </h3>
+      <div class="coffee-text">
+        <p data-locale="coffeeNotificationText">If this project has been helpful to you, consider buying me a coffee!</p>
+      </div>
+      <div class="coffee-actions">
+        <a href="https://buymeacoffee.com/mtktalha" target="_blank" class="coffee-button" data-locale="coffeeNotificationButton">
+          Buy Me a Coffee
+        </a>
+        <button id="closeCoffeeBtn" class="close-button" data-locale="coffeeNotificationClose">Later</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="locale.js"></script>
+  <script src="theme-manager.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
+

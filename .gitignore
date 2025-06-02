@@ -1,0 +1,77 @@
+# Build outputs
+dist/
+build/
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+
+# Extension packages
+*.crx
+*.pem
+*.zip
+
+# Logs
+logs/
+*.log
+
+# GitHub Public Release - Security exclusions
+# ===========================================
+
+# Premium/License configuration
+config/secrets.js
+config/premium.js
+premium-config.json
+
+# Development & testing tools
+scripts/dev-unlock.js
+scripts/license-test.js
+dev-tools/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.staging
+
+# Private keys and secrets
+*.private.js
+secrets/
+private/
+
+# License validation files
+license-validator/
+gumroad-keys/
+
+# Development mode files
+dev-mode-enabled.flag
+unlock-all.js
+
+# Premium theme unlocked states (for security)
+premium-unlocked.json
+
+# API keys and tokens
+api-keys.json
+tokens.json 
