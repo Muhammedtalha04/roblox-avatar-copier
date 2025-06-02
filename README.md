@@ -229,9 +229,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/your-username/roblox-avatar-copier/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/roblox-avatar-copier/discussions)
-- **Email**: [your-email@example.com](mailto:your-email@example.com)
+- **Issues**: [GitHub Issues](https://github.com/Muhammedtalha04/roblox-avatar-copier/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Muhammedtalha04/roblox-avatar-copier/discussions)
+- **Email**: [muhammedtalha4521@gmail.com](mailto:muhammedtalha4521@gmail.com)
 
 ## ⭐ Show Your Support
 
